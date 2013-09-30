@@ -1,0 +1,74 @@
+<html>
+<head>
+<script src="http://192.168.1.22/jquery-1.8.3.min.js" language="javascript"></script>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0;" />
+<link href="http://192.168.1.22/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="http://192.168.1.22/bootstrap/js/bootstrap.min.js"></script>
+<script>
+var socket = io.connect('http://192.168.1.22:8080');
+
+var beta = '500';
+
+window.lastbeta='0';
+window.lastgamma='0';
+
+$(function(){
+
+window.gyro = 'ready';
+alert('Ready -- Lets race !');
+});
+
+window.ondeviceorientation = function(event) {
+  beta = Math.round(event.beta)*-1;
+  gamma = Math.round(event.gamma);
+  beta = beta*25;
+  gamma = gamma*10;
+  if (beta > 500) {
+    beta=500;
+  }
+  if (beta < -500) {
+    beta=-500;
+  }
+  if (gamma > 400) {
+    gamma=400;
+  }
+  if (gamma < -1100) {
+    gamma=-1100;
+  }
+
+//gamma = -500;
+//stop sending the same command more than once
+send = 'N';
+if (window.lastbeta != beta) { send = 'Y' }
+if (window.lastgamma != gamma) { send = 'Y' }
+
+window.lastbeta=beta;
+window.lastgamma=gamma;
+
+if (window.gyro == 'ready' && send=='Y')  { //dont send another command until last one doone... its only a little pi
+  window.gyro = 'notready';
+//  $.post("gyro.cgi", { beta: beta, gamma: gamma }, function(data) {
+    socket.emit('fromclient', beta + " " + gamma );
+    window.gyro = 'ready';
+    $('#info').text('beta:'+ beta);
+    $('#info2').text('gamma:'+ gamma);
+//  });
+}
+}
+
+
+
+</script>
+</head><body>
+
+<img src="http://172.20.10.4:8091/?action=stream">
+<input type=button name=button id=button value=go>
+<div id=info>waiting</div>
+<div id=info2>waiting</div>
+<input type=button value='snap' id=cam>
+</body>
+</head>
+</html>
