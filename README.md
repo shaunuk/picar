@@ -3,6 +3,9 @@ picar
 
 Raspberry Pi client server rc car control system utilising a smartphone/tables gyro and html5/javascript running on node.js
 
+Demo:
+https://www.youtube.com/watch?v=JSP6VKiU7F4
+
 Instructions:
 
 1. get node.js
