@@ -1,7 +1,7 @@
 picar
 =====
 
-Raspberry Pi client server rc car control system utilising a smartphone/tables gyro and html5/javascript running on node.js
+Raspberry Pi client/server rc car control system utilising a smartphone/tablet browser gyro and html5/javascript running on node.js with websockets.
 
 Demo:
 https://www.youtube.com/watch?v=JSP6VKiU7F4
