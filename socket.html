@@ -21,7 +21,7 @@ $(function(){
 });
 
 window.ondeviceorientation = function(event) {
-  beta = 400+(Math.round(event.beta*-1)*2);
+  beta = 400+(Math.round(event.beta*-1)*2.4);
   if (beta >= maxbeta) {
     beta=maxbeta;
   }

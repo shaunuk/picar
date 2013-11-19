@@ -43,7 +43,7 @@ function emergencyStop(){
 
 io.sockets.on('connection', function (socket) { //fire up a web socket server
   socket.on('fromclient', function (data) {
-  console.log(data.beta);
+  console.log("Beta: "+data.beta+" Gamma: "+data.gamma);
   //exec("echo 'sa "+data+"' > /dev/ttyAMA0", puts); //using http://electronics.chroma.se/rpisb.php
   //exec("picar.py 0 "+data.beta, puts); //using python adafruit module
   pwm.setPWM(0, 0, data.beta); //using direct i2c pwm modue
