@@ -1,42 +1,43 @@
 <html>
 <head>
 <script src="jquery-2.0.3.min.js" language="javascript"></script>
-
-
 <script src="/socket.io/socket.io.js"></script>
 <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0;" />
 <script>
-var socket = io.connect('http://192.168.1.25:8080');
 
-var beta = '500';
+//------ Define your variables here
+var socket = io.connect('http://172.20.10.2:8080');
+var centerbeta = '400';
+var minbeta = '340';
+var maxbeta = '470';
+var gamma = '330';
 
 window.lastbeta='0';
 window.lastgamma='0';
 
 $(function(){
-
-window.gyro = 'ready';
-alert('Ready -- Lets race !');
+  window.gyro = 'ready';
+  alert('Ready -- Lets race !');
 });
 
 window.ondeviceorientation = function(event) {
-  beta = Math.round(event.beta)*-1;
+  beta = 400+(Math.round(event.beta*-1)*2);
+  if (beta >= maxbeta) {
+    beta=maxbeta;
+  }
+  if (beta <= minbeta) {
+    beta=minbeta;
+  }
   gamma = Math.round(event.gamma);
-  beta = beta*25;
+/*  beta = beta*25;
   gamma = gamma*10;
-  if (beta > 500) {
-    beta=500;
-  }
-  if (beta < -500) {
-    beta=-500;
-  }
   if (gamma > 400) {
     gamma=400;
   }
   if (gamma < -1100) {
     gamma=-1100;
   }
-
+*/
 //gamma = -500;
 //stop sending the same command more than once
 send = 'N';
@@ -49,9 +50,9 @@ window.lastgamma=gamma;
 if (window.gyro == 'ready' && send=='Y')  { //dont send another command until last one doone... its only a little pi
   window.gyro = 'notready';
 //  $.post("gyro.cgi", { beta: beta, gamma: gamma }, function(data) {
-    socket.emit('fromclient', beta + " " + gamma );
+    socket.emit('fromclient', { beta: beta, gamma: gamma } );
     window.gyro = 'ready';
-    $('#info').text('beta:'+ beta);
+    $('#info').text('Raw: '+event.beta+' Send:'+beta);
     $('#info2').text('gamma:'+ gamma);
 //  });
 }
