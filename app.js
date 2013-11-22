@@ -39,6 +39,7 @@ lastAction = "";
 function emergencyStop(){
   pwm.setPWM(0, 0, 400); //center front wheels
   pwm.setPWM(1, 0, 330); //stop motor
+  console.log('###EMERGENCY STOP - signal lost or shutting down');
 }
 
 io.sockets.on('connection', function (socket) { //fire up a web socket server
@@ -47,12 +48,14 @@ io.sockets.on('connection', function (socket) { //fire up a web socket server
   //exec("echo 'sa "+data+"' > /dev/ttyAMA0", puts); //using http://electronics.chroma.se/rpisb.php
   //exec("picar.py 0 "+data.beta, puts); //using python adafruit module
   pwm.setPWM(0, 0, data.beta); //using direct i2c pwm modue
+  pwm.setPWM(1, 0, data.gamma); //using direct i2c pwm modue
   clearInterval(lastAction); //stop emergency stop timer
   lastAction = setInterval(emergencyStop,1000); //set emergency stop timeer for 1 second
   });
 });
 
 process.on('SIGINT', function() {
+  emergencyStop();
   console.log("\nGracefully shutting down from SIGINT (Ctrl-C)");
   pwm.stop();
   return process.exit();
