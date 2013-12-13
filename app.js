@@ -9,8 +9,10 @@ var app = require('http').createServer(handler)
   app.listen(8080);
 
 
-pwm = new PwmDriver(0x40,'/dev/i2c-0'); //set the address and device name of the breakout board
+//set the address and device name of the breakout board
+pwm = new PwmDriver(0x40,'/dev/i2c-0');
 
+//set pulse widths
 setServoPulse = function(channel, pulse) {
   var pulseLength;
   pulseLength = 1000000;
@@ -23,16 +25,18 @@ setServoPulse = function(channel, pulse) {
   return pwm.setPWM(channel, 0, pulse);
 };
 
+//set pulse frequency
 pwm.setPWMFreq(60);
 
-//Make a web server - ohh why is this so easy - i love node
+//Make a web server on port 8080
+
 var file = new(static.Server)();
 function handler(request, response) {
   console.log('serving file',request.url)
   file.serve(request, response);
 };
 
-console.log('Pi Car we server listening on port 8080');
+console.log('Pi Car we server listening on port 8080 visit http://ipaddress:8080/socket.html');
 
 lastAction = "";
 
@@ -42,7 +46,8 @@ function emergencyStop(){
   console.log('###EMERGENCY STOP - signal lost or shutting down');
 }
 
-io.sockets.on('connection', function (socket) { //fire up a web socket server
+//fire up a web socket server 
+io.sockets.on('connection', function (socket) { 
   socket.on('fromclient', function (data) {
   console.log("Beta: "+data.beta+" Gamma: "+data.gamma);
   //exec("echo 'sa "+data+"' > /dev/ttyAMA0", puts); //using http://electronics.chroma.se/rpisb.php
@@ -50,7 +55,7 @@ io.sockets.on('connection', function (socket) { //fire up a web socket server
   pwm.setPWM(0, 0, data.beta); //using direct i2c pwm modue
   pwm.setPWM(1, 0, data.gamma); //using direct i2c pwm modue
   clearInterval(lastAction); //stop emergency stop timer
-  lastAction = setInterval(emergencyStop,1000); //set emergency stop timeer for 1 second
+  lastAction = setInterval(emergencyStop,1000); //set emergency stop timer for 1 second
   });
 });
 
