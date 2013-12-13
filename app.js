@@ -6,6 +6,7 @@ var app = require('http').createServer(handler)
   , sys = require('sys')
   , PwmDriver = require('adafruit-i2c-pwm-driver')
   , sleep = require('sleep')
+  , argv = require('optimist').argv;
   app.listen(8080);
 
 
@@ -45,6 +46,21 @@ function emergencyStop(){
   pwm.setPWM(1, 0, 330); //stop motor
   console.log('###EMERGENCY STOP - signal lost or shutting down');
 }
+
+
+if (argv.beta) {
+  console.log("\nPerforming one off servo position move to: "+argv.beta);
+  pwm.setPWM(0, 0, argv.beta); //using direct i2c pwm modue
+  pwm.stop();
+  return process.exit();
+}
+if (argv.gamma) {
+  console.log("\nPerforming one off servo position move to: "+argv.gamma);
+  pwm.setPWM(1, 0, argv.gamma); //using direct i2c pwm modue
+  pwm.stop();
+  return process.exit();
+}
+
 
 //fire up a web socket server 
 io.sockets.on('connection', function (socket) { 
