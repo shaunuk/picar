@@ -8,17 +8,13 @@
 //------ Define your variables here
 var socket = io.connect(window.location.hostname+':8080');
 
-var centerbeta = 400; //where is the middle
-var minbeta = '340'; //right limit
-var maxbeta = '470'; //left limit
-var multbeta = 3; //factor to multiply the raw gyro figure by to get the desired rande of steering
+//st
+var maxbeta = .175; //r limit
+var minbeta = .105; //l limit
 
-
-var centergamma = 330;
-var ajustmentgamma = 70; //what do we do to the angle to get to 0 an rest
-var mingamma = 250; //backwards limit
-var maxgamma = 400; //forward limit
-var multgamma = 1; //factor to multiply the raw gyro figure by to get the desired rante os accalaration
+//thr
+var mingamma = .105; //backwards limit
+var maxgamma = .175; //forward limit
 
 window.lastbeta='0';
 window.lastgamma='0';
@@ -30,22 +26,25 @@ $(function(){
 
 window.ondeviceorientation = function(event) {
 
-  beta = centerbeta+(Math.round(event.beta*-1)*multbeta);
+  //steer
+  beta = .001167 * Math.round(event.beta) + .14;
+  //iphone beta =  .001167 * Math.round(event.beta * -1) + .14;
   if (beta >= maxbeta) {
     beta=maxbeta;
   }
   if (beta <= minbeta) {
     beta=minbeta;
   }
-gamma = event.gamma;
-  gamma = ((Math.round(event.gamma)+ajustmentgamma)*multgamma)+centergamma;
-/*
+
+  gamma = .001044 * Math.round(event.gamma) + .168;
+  //iphone gamma = -0.00125 * Math.round(event.gamma) + .175;
+
   if (gamma >= maxgamma) {
     gamma=maxgamma;
   }
-  if (gamma <= gamma) {
+  if (gamma <= mingamma) {
     gamma=mingamma;
-  }*/
+  }
 
 
 
@@ -75,7 +74,7 @@ if (window.gyro == 'ready' && send=='Y')  { //dont send another command until la
 
 <!--<img src="http://172.20.10.4:8091/?action=stream">-->
 <input type=button name=button id=button value=go>
-<div id=info>waiting</div>
+<div id=info>sont xp waiting</div>
 <div id=info2>waiting</div>
 <input type=button value='snap' id=cam>
 </body>

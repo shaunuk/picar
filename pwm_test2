@@ -1,0 +1,13 @@
+// use correct node lib!!
+// uses pipgio
+var piblaster = require("pi-blaster.js");
+
+//piblaster.setPwm(17,0.108); //throttle
+
+
+piblaster.setPwm(18,.14); // steer l
+//piblaster.setPwm(18,.14); // steer mid
+//piblaster.setPwm(18,.175); // steer r
+
+
+
