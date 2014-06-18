@@ -7,7 +7,7 @@ Demo:
 https://www.youtube.com/watch?v=JSP6VKiU7F4
 
 Instructions:
-![](https://github.com/lawsonkeith/Pi-Rc-Car/blob/master/media/picar_scematic.PNG)
+![schematic](/raw/master/media/picar_scematic.PNG)
 
 tested with node 0.10.21
 
