@@ -7,6 +7,9 @@ Demo:
 https://www.youtube.com/watch?v=JSP6VKiU7F4
 
 Instructions:
+![](https://github.com/lawsonkeith/Pi-Rc-Car/media/picar_scematic.PNG)
+
+
 tested with node 0.10.21
 
 1. get node.js
