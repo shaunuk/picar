@@ -36,5 +36,28 @@ You can see here how I've packaged everything up in the car.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0219.jpg)
 The Pi Is placed in a plastic bag for protection; it's worth putting peice of card underneath it to make sure the PCB doesn't poke through the plastic.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0220.jpg)
-Here you can see the wiring harness I made up.
+Here you can see the wiring harness I made up including the linear regulator PCB and GPIO and interface connectors.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0221.jpg)
+
+##Software 
+The Pi uses node.js to sun a web server; a wi-fi dongle on the PI uses your phone as a wireless hotspot to enable wifi communications.  Once you enter the web address of the PI a dialog box appears prompting you to begin racing; at that point you can control your car by tiliting oyur phone.  An emergency stop is built into the app so if it loses comms to your phone the vehicle stops accelerating and steers forwards.  The Pi-Blaster program allows pins 17 and 18 of the PI to act as PWM outputs and control steering and throttle.
+The app runs on raspbian using a raspberry PI rev B although you cauld use the A model.
+
+###Get the app 
+make a picar directory.
+[cd /home/pi]
+[sudo mkdir picar]
+[cd picar]
+Note - do everything in this dir.
+Get this project from GITHUB.
+[sudo git clone https://github.com/lawsonkeith/Pi-Rc-Car]
+
+###Download node.js
+Download a new version of node.js
+[sudo wget http://nodejs.org/dist/v0.10.21/node-v0.10.21-linux-arm-pi.tar.gz]
+Then unzip it.
+[sudo tar -xvzf node-v0.10.21-linux-arm-pi.tar.gz]
+Create symbolic links to the node executables
+[sudo ln -s ~/picar/node-v0.10.21-linux-arm-pi/bin/node /bin/node]
+Package manager
+[sudo ln -s ~/picar/node-v0.10.21-linux-arm-pi/bin/npm  /bin/npm]
