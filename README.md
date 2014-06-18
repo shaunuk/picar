@@ -61,3 +61,22 @@ Create symbolic links to the node executables
 [sudo ln -s ~/picar/node-v0.10.21-linux-arm-pi/bin/node /bin/node]
 Package manager
 [sudo ln -s ~/picar/node-v0.10.21-linux-arm-pi/bin/npm  /bin/npm]
+
+
+###Download additional node packages
+
+###Download PI Blaster soft WPM
+
+###Setup your PWM defaults
+
+###Configure PI to use Smartphone WiFi
+
+###Setup your smartphone defaults
+
+###Setup html file for your setup
+
+###Configure PI to run node app by default
+
+#Issues
+PiBlaster can cause issues with the windows environment; mine kept crashing when I moved them when it was running.  If you stop running it the problem will go away.
+[sudo /etc/init.d/pi-blaster stop]
