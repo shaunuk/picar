@@ -8,7 +8,7 @@ https://www.youtube.com/watch?v=JSP6VKiU7F4
 
 Instructions:
 ![schematic](/raw/master/media/picar_scematic.PNG)
-
+![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media)
 tested with node 0.10.21
 
 1. get node.js
