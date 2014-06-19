@@ -72,7 +72,7 @@ First we need to clone the app from github and place it in it's own directory.
 <ul>
 <li>[cd /home/pi]</li>
 <li>Get this project from GITHUB.</li>
-<li>[sudo git clone https://github.com/lawsonkeith/Pi-Rc-Car]</li>
+<li>[sudo git clone https://github.com/lawsonkeith/picar]</li>
 <li>[cd picar]</li>
 <li>Note - do everything in this dir from now on unless instructed otherwise.</li>
 </ul>
