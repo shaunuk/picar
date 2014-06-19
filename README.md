@@ -71,11 +71,10 @@ To setup your Pi you need to download some software packages then setup your Pi 
 First we need to clone the app from github and place it in it's own directory.
 <ul>
 <li>[cd /home/pi]</li>
-<li>[sudo mkdir picar]</li>
-<li>[cd picar]</li>
-<li>Note - do everything in this dir from now on unless instructed otherwise.</li>
 <li>Get this project from GITHUB.</li>
 <li>[sudo git clone https://github.com/lawsonkeith/Pi-Rc-Car]</li>
+<li>[cd picar]</li>
+<li>Note - do everything in this dir from now on unless instructed otherwise.</li>
 </ul>
 
 ###Download node.js
@@ -85,22 +84,21 @@ Download a new version of node.js
 <li>Then unzip it.</li>
 <li>[sudo tar -xvzf node-v0.10.21-linux-arm-pi.tar.gz]</li>
 <li>Create symbolic links to the node executables</li>
-<li>[sudo ln -s ~/picar/node-v0.10.21-linux-arm-pi/bin/node /bin/node]</li>
+<li>[sudo ln -s /home/pi/picar/node-v0.10.21-linux-arm-pi/bin/node /bin/node]</li>
 <li>Package manager</li>
-<li>[sudo ln -s ~/picar/node-v0.10.21-linux-arm-pi/bin/npm  /bin/npm]
+<li>[sudo ln -s /home/pi/picar/node-v0.10.21-linux-arm-pi/bin/npm  /bin/npm]
 </li>
 </ul>
 
 ###Download additional node packages
 Next we use the node package manager (npm) to install some packages that we are going to use in node to give us the functionality required to control our RC car.
 <ul>
-<li>[npm install socket.io node-static sleep optimist pi-blaster]</li>
+<li>[npm install socket.io node-static sleep optimist pi-blaster.js]</li>
 </ul>
 
+###Download PI Blaster soft PWM daemon
+The Pi blaster node library also requires a daemon to be downloaded that runs in the background and runs the PWM.  Have a look at [https://github.com/sarfata/pi-blaster.js/] to get some more info about this package.
 
-
-###Download PI Blaster soft PWM
-The Pi blaster node library also requires a daemon to be downloaded that runs in the background and runs the PWM.
 <ul>
 <li>[git clone httpp://github.com/sarfata/pi-blaster]</li>
 <li>[make]</li>
@@ -108,15 +106,14 @@ The Pi blaster node library also requires a daemon to be downloaded that runs in
 </ul>
 
 ###Setup your PWM defaults
-I've included a node script file called pwm_test.  Tou run this you enter:
+I've included a node script file called pwm_test2.  Tou run this you enter:
 <ul>
 <li>[node pwm_test2]</li>
 </ul>
 
-We are now going to integrate the pi int the RC car and check we can control the servos.  You can either connect your Pi to your TV and a keyboard or setup vpn to do this.
+We are now going to integrate the pi int the RC car and check we can control the servos.  You can either connect your Pi to your TV and a keyboard or setup vpn to do this.  
 
-The pi-blaster node setPwm API requires a pin and demand parameter.  For example setPwm(17,.5) would set ppin 17 to 50% 
-PWM demand or 3.2/2 V.  First off make sure you are happy
+The pi-blaster node setPwm() API requires a pin and demand parameter.  For example setPwm(17,.5) would set ppin 17 to 50% PWM demand or 3.2/2 V.  First off make sure you are happy
 with how the API works and make sure you can set the output voltage on pins 17 and 18 using a meter.
 Once you are happy with this you can connect up your steering servo and work out the constants you
 Need to send to get it to steer left; right forwards and backwards.  Make sure that when you go full left or 
@@ -133,19 +130,19 @@ Enter your platform specific constants into the 'readme' file.
 We now need to set your Pi up to use your phone as wifi.
 
 * On your phone enable the wifi hotspot option.
-* On your Pi disable the existing WiFi option and connect to your phone
-* You may need to enter a key to do this.
+* On your Pi disable the existing WiFi option and connect to your phone.
+* You may need to enter a network key to do this.
 * Check it all works by accessing the internet from your Pi.
 * Reboot your Pi and check it still all works.
 * You are now going to set your Pi IP address to static.
 * Enter [ifconfig] write down your IP address for wlan0.
-* Edit your network setup file [sudo nano /etc/network/interfaces] file and set to to the current wlan0 IP address. Using the 'interfaces' file in this project as an example.
+* Edit your network setup file [sudo nano /etc/network/interfaces] file and set to to the current wlan0 IP address and from dhcp to static using the 'interfaces' file in this project as an example.
 * Reboot the Pi and check all still works.
 
 ###Setup your smartphone defaults
 With the Wifi Setup you can now test out the phone.
 * [node app.js]
-* * Navigate to http://PI_IPADDRESS:8080/Socket.html on your phone.
+* Navigate to http://PI_IPADDRESS:8080/socket.html on your phone.
 * A message comes up and asks you to race.
 * On the Pi you should see the values being sent to the setPWM API by the web page running on your Pi.
 * If these work; great you can skip the next step.
