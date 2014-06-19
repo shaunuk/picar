@@ -19,18 +19,25 @@ There are a number of RC car electrical setups but my example uses a battery eli
 
 ###Servo signal levels
 It is necessary first to measure what your servo command signal voltage levels are and check they fall within the 0-3.3V range available by the PI GPIO lines.  You can do this with a multimeter connected to the receiver pins.  On my car speed and steering both use 3 pin headers which are wired:
-
-Gnd - Black;   Power - Red;    Throttle / Steer - Orange or White
+<ul>
+<li>Gnd - Black</li>
+<li>Power - Red</li>
+<li>Throttle / Steer - Orange or White</li>
+</ul>
 
 For my car the throttle voltages were:
-Full Fwd:     .19V
-Idle:         .28V
-Full Reverse: .36V
+<ul>
+<li>Full Fwd:     .19V</li>
+<li>Idle:         .28V</li>
+<li>Full Reverse: .36V</li>
+</ul>
 
 The steering voltages were:
-Full Left:    .19V
-Fwds:         .28V
-Full Right:   .355V
+<ul>
+<li>Full Left:    .19V</li>
+<li>Fwds:         .28V</li>
+<li>Full Right:   .355V</li>
+</ul>
 
 Once you are happy about how you are going to power your PI and that the GPIO are up to the job you can start thinking about wiring it up.
 
