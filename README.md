@@ -113,13 +113,37 @@ I've included a node script file called pwm_test.  Tou run this you enter:
 <li>[node pwm_test2]</li>
 </ul>
 
-The pi-blaster API requires a pin and demand parameter.  First off make sure you are happy
-with how the API works and make sure you can set the output voltage on pins 17 and 18.
-Once you are happy with this you 
+We are now going to integrate the pi int the RC car and check we can control the servos.  You can either connect your Pi to your TV and a keyboard or setup vpn to do this.
+
+The pi-blaster node setPwm API requires a pin and demand parameter.  For example setPwm(17,.5) would set ppin 17 to 50% 
+PWM demand or 3.2/2 V.  First off make sure you are happy
+with how the API works and make sure you can set the output voltage on pins 17 and 18 using a meter.
+Once you are happy with this you can connect up your seteering servo and work out the constants you
+need to send to get it to steer left; right forwards and backwards.  Make sure that when you go full left or 
+right that the servo isn't over driving as you can dammage the servo.
+
+Do the same with throttle; the demand magnitudes should be the same so it should be just a case of proving the
+wiring and signal directions.
+
+You should now be fairly confident about controlling the servos and powering your pi from the RC platform.  Just modify what's in 'pwm_test2' and keep running it till you are happy with how it all works.
+
+Enter your platform specific constants into the 'readme' file.
 
 ###Configure PI to use Smartphone WiFi
+We now need to set your Pi up to use your phone as wifi.
+
+* On your phone enable the wifi hotspot option.
+* On your Pi disable the existing WiFi option and connect to your phone
+* You may need to enter a key to do this.
+* Check it all works by accessing the internet from your Pi.
+* Reboot your Pi and check it still all works.
+* You are now going to set your Pi IP addresss to static.
+* Enter [ifconfig] write down your IP address for wlan0.
+* Edit your network setup file [sudo nano /etc/network/interfaces] file and set to to the current wlan0 IP address. Using the 'interfaces' file in this project as an example.
+* Reboot the Pi and check all sill works.
 
 ###Setup your smartphone defaults
+With the Wifi Setup
 
 ###Setup html file for your setup
 
