@@ -1,4 +1,4 @@
-#Pi-Rc-Car
+#picar
 
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0216.jpg)
 
