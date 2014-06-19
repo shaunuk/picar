@@ -69,37 +69,50 @@ To setup your Pi you need to download some software packages then setup your Pi 
 
 ###Get the app 
 First we need to clone the app from github and place it in it's own directory.
-[cd /home/pi]
-[sudo mkdir picar]
-[cd picar]
-Note - do everything in this dir from now on unless instructed otherwise.
-Get this project from GITHUB.
-[sudo git clone https://github.com/lawsonkeith/Pi-Rc-Car]
+<ul>
+<li>[cd /home/pi]</li>
+<li>[sudo mkdir picar]</li>
+<li>[cd picar]</li>
+<li>Note - do everything in this dir from now on unless instructed otherwise.</li>
+<li>Get this project from GITHUB.</li>
+<li>[sudo git clone https://github.com/lawsonkeith/Pi-Rc-Car]</li>
+</ul>
 
 ###Download node.js
 Download a new version of node.js
-[sudo wget http://nodejs.org/dist/v0.10.21/node-v0.10.21-linux-arm-pi.tar.gz]
-Then unzip it.
-[sudo tar -xvzf node-v0.10.21-linux-arm-pi.tar.gz]
-Create symbolic links to the node executables
-[sudo ln -s ~/picar/node-v0.10.21-linux-arm-pi/bin/node /bin/node]
-Package manager
-[sudo ln -s ~/picar/node-v0.10.21-linux-arm-pi/bin/npm  /bin/npm]
-
+<ul>
+<li>[sudo wget http://nodejs.org/dist/v0.10.21/node-v0.10.21-linux-arm-pi.tar.gz]</li>
+<li>Then unzip it.</li>
+<li>[sudo tar -xvzf node-v0.10.21-linux-arm-pi.tar.gz]</li>
+<li>Create symbolic links to the node executables</li>
+<li>[sudo ln -s ~/picar/node-v0.10.21-linux-arm-pi/bin/node /bin/node]</li>
+<li>Package manager</li>
+<li>[sudo ln -s ~/picar/node-v0.10.21-linux-arm-pi/bin/npm  /bin/npm]
+</li>
+</ul>
 
 ###Download additional node packages
 Next we use the node package manager (npm) to install some packages that we are going to use in node to give us the functionality required to control our RC car.
-[npm install socket.io node-static sleep optimist pi-blaster]
+<ul>
+<li>[npm install socket.io node-static sleep optimist pi-blaster]</li>
+</ul>
+
+
 
 ###Download PI Blaster soft PWM
 The Pi blaster node library also requires a daemon to be downloaded that runs in the background and runs the PWM.
-[git clone httpp://github.com/sarfata/pi-blaster]
-[make]
-[sudo make install]
+<ul>
+<li>[git clone httpp://github.com/sarfata/pi-blaster]</li>
+<li>[make]</li>
+<li>[sudo make install]</li>
+</ul>
 
 ###Setup your PWM defaults
 I've included a node script file called pwm_test.  Tou run this you enter:
-[node pwm_test2]
+<ul>
+<li>[node pwm_test2]</li>
+</ul>
+
 The pi-blaster API requires a pin and demand parameter.  First off make sure you are happy
 with how the API works and make sure you can set the output voltage on pins 17 and 18.
 Once you are happy with this you 
