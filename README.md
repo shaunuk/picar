@@ -6,17 +6,31 @@
 Use your raspberry pi to control a 1/10 scale RC car via a web page hosted wirelessly on your PI.  All you need to do is set up your PI to use your mobile as a hotspot then log onto the appropriate web page and tilt your phone to control your car.  I've used an old Tamiya hornet in this example; any car will do but if you are buying one try and get one with enough space under the bodyshell to fit all your electronics.
 
 ##Electrical
-This project is based on [shaunuk/picar] but replaces the servo board with a soft PWM driver on the PIs GPIO pins.  It's also possible to get rid of the battery power supply for the PI.
+This project is based on [shaunuk/picar] but replaces the servo board with a soft PWM driver on the PIs GPIO pins.  It's also possible to get rid of the battery power supply for the PI depending on your specific setup.
 
 https://www.youtube.com/watch?v=JSP6VKiU7F4
 
-When it comes to powering the PI it is necessary to have a fairly stable 5V power supply otherwise it keeps resetting when you drive the motor.  For this example I had an old NiCad battery pack which dropped a lot of voltage when the car accelerated which caused the PI to keep resetting.  To get round that I've added an additional 7.2V AA battery pack and a 5V linear power supply to give a clean 5V supply to the PI independant of the motor demands.  If you have a new NiMH battery you may not need this and might get away with powering off the 5V offered by the ESC.  To see if this is an option you'll need to use a multimeter and check how much that 5V line drops when your RC car is accelerated.  You'll also want to check the 5V is fairly stable and independant of throttle demands i.e doesn't go above 5.5V at any point.  If your happy with your onboard 5V supply you can remove the linear regulator and additional battery pack; you then just move the 5V supply from where the regulator was to the 5V pin on the ESC (middle pin that's unconnected on my schematic).
+###Pi Power supply
+When it comes to powering the PI it is necessary to have a fairly stable 5V power supply otherwise it keeps resetting when you drive the motor.  For this example I had an old NiCad battery pack which dropped a lot of voltage when the car accelerated which caused the PI to keep resetting.  To get round that I've added an additional 7.2V AA battery pack and a 5V linear power supply to give a clean 5V supply to the PI independant of the motor demands.  If you have a new NiMH battery you may not need this and might get away with powering off the 5V offered by the ESC.  
 
-There are a number of RC car electrical setups but my example uses a battery eliminator circuit (which I've not used because of the battery issue).  The electronics supply normally comes from the electronic speed controller (ESC) and powers the receiver and steeirng servo with 5V (note these devices are more tolerant of power supply dips than the Pi).  The receiver normally receives commands from the radio controller than sends them to the ESC (throttle) and steering servo (steering).  These commands fall within the 0-5V supplied by the ESC for example: 1V = steer fwds; 1.5 = steer right; 0.5 = steer left.
+To see if this is an option you'll need to use a multimeter and check how much that 5V line drops when your RC car is accelerated; you might want to put some load on the wheels as well to further load the battery.  You'll also want to check the 5V is fairly stable and doesn't rise 5.5V at any point.  If your happy with your onboard 5V supply you can remove the linear regulator and additional battery pack; you then just move the 5V supply from where the regulator was to the 5V pin on the ESC (middle pin that's unconnected on my schematic).
 
-It is necessary at first to measure what your command signal voltage levels are and check they fall within the 0-3.3V range available by the PI GPIO lines.  You can do this with a multimeter connected to the receiver pins.  On my car speed and steering both use 3 pin headers which are wired:
+There are a number of RC car electrical setups but my example uses a battery eliminator circuit (which I've not used because of the battery issue).  The electronics supply normally comes from the electronic speed controller (ESC) and powers the receiver and steeirng servo with 5V (note these devices are more tolerant of power supply dips than the Pi).  The receiver normally receives commands from the radio controller than sends them to the ESC (throttle) and steering servo (steering).  These commands fall within the 0-5V supplied by the ESC for example: 1V = steer fwds; 1.5 = steer right; 0.5 = steer left.  Looking at the data sheet for my ESC I it could supply up to 1A which would have been enough for my Pi and my Steering Servo if the voltage had have been stable enough.
+
+###Servo signal levels
+It is necessary first to measure what your servo command signal voltage levels are and check they fall within the 0-3.3V range available by the PI GPIO lines.  You can do this with a multimeter connected to the receiver pins.  On my car speed and steering both use 3 pin headers which are wired:
 
 Gnd - Black;   Power - Red;    Throttle / Steer - Orange or White
+
+For my car the throttle voltages were:
+Full Fwd:     .19V
+Idle:         .28V
+Full Reverse: .36V
+
+The steering voltages were:
+Full Left:    .19V
+Fwds:         .28V
+Full Right:   .355V
 
 Once you are happy about how you are going to power your PI and that the GPIO are up to the job you can start thinking about wiring it up.
 
