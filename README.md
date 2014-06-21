@@ -15,15 +15,15 @@ https://www.youtube.com/watch?v=JSP6VKiU7F4
 ###Pi Power supply
 When it comes to powering the PI it is necessary to have a fairly stable 5V power supply otherwise it keeps resetting when you drive the motor.  For this example I had an old NiCad battery pack which dropped a lot of voltage when the car accelerated which caused the PI to keep resetting.  To get round that I've added an additional 7.2V AA battery pack and a 5V linear power supply to give a clean 5V supply to the PI independent of the motor demands.  If you have a new NiMH battery you may not need this and might get away with powering off the 5V offered by the ESC.  
 
-To see if this is an option you'll need to use a multi-meter and check how much that 5V line drops when your RC car is accelerated; you might want to put some load on the wheels as well to further load the battery.  You'll also want to check the 5V is fairly stable and doesn't rise 5.5V at any point.  If you’re happy with your on-board 5V supply you can remove the linear regulator and additional battery pack; you then just move the 5V supply from where the regulator was to the 5V pin on the ESC (middle pin that's unconnected on my schematic).  
+To see if this is an option you'll need to use a multi-meter and check how much that 5V line drops when your RC car is accelerated; you might want to put some load on the wheels as well to further load the battery.  You'll also want to check the 5V is fairly stable and doesn't rise 5.5V at any point.  If you’re happy with your on-board 5V supply you can remove the linear regulator and additional battery pack; you then just move the 0V and 5V wired from where the regulator was to the corresponding pins on the ESC (middle pin that's unconnected on my schematic).  
 
-I bought an old RC of ebay and found the supplied NiCad dropped too much voltage when the car accelerated.  Buying a new battery allowed me to run the Pi from the ESC.
+I bought an old RC of ebay and found the supplied NiCad dropped too much voltage when the car accelerated.  Buying a new battery allowed me to run the Pi direct from the ESC.
 
 
-Type  |  Old NiCad  | NiMh
-------|-------------|------
-Min ESC V  | 3.4  |  5.1
-Max ESC V  | 5.5  |  5.5 
+  Type  |  Old NiCad  | New NiMh
+  ------|-------------|------
+  Min ESC V  | 3.4  |  5.1
+  Max ESC V  | 5.5  |  5.5 
 
 
 
@@ -32,23 +32,23 @@ There are a number of RC car electrical setups but my example uses a battery eli
 ###Servo signal levels
 It is necessary first to measure what your servo command signal voltage levels are and check they fall within the 0-3.3V range available by the PI GPIO lines.  You can do this with a multi-meter connected to the receiver pins.  On my car speed and steering both use 3 pin headers which are wired:
 <ul>
-<li>Gnd - Black</li>
-<li>Power - Red</li>
-<li>Throttle / Steer - Orange or White</li>
+   <li>Gnd - Black</li>
+   <li>Power - Red</li>
+   <li>Throttle / Steer - Orange or White</li>
 </ul>
 
 For my car the throttle voltages were:
 <ul>
-<li>Full Fwd:     .19V</li>
-<li>Idle:         .28V</li>
-<li>Full Reverse: .36V</li>
+   <li>Full Fwd:     .19V</li>
+   <li>Idle:         .28V</li>
+   <li>Full Reverse: .36V</li>
 </ul>
 
 The steering voltages were:
 <ul>
-<li>Full Left:    .19V</li>
-<li>Fwds:         .28V</li>
-<li>Full Right:   .355V</li>
+   <li>Full Left:    .19V</li>
+   <li>Fwds:         .28V</li>
+   <li>Full Right:   .355V</li>
 </ul>
 
 Once you are happy about how you are going to power your PI and that the GPIO are up to the job you can start thinking about wiring it up.
