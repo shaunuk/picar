@@ -3,9 +3,9 @@
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0216.jpg)
 
 ##Overview
-Use your raspberry pi to control a 1/10 scale RC car via a web page hosted wirelessly on your PI.  All you need to do is set up your PI to use your mobile as a hotspot then log onto the appropriate web page and tilt your phone to control your car.  I've used an old Tamiya hornet in this example; any car will do but if you are buying one try and get one with enough space under the bodyshell to fit all your electronics.
+Use your raspberry pi to control a 1/10 scale RC car via a web page hosted wirelessly on your PI.  All you need to do is set up your PI to use your mobile as a hotspot then log onto the appropriate web page and tilt your phone to control your car like a Wii Remote.  I've used an old Tamiya hornet in this example; any car will do but if you are buying one try and get one with enough space under the bodyshell to fit all your electronics.
 
-This is a fork of an existing github project that I've modified to make easier to install and to get rid of some components.  It should be possible to add a video camera but I didn't do this.
+This is a fork of an existing github project that I've modified to make easier to install and to get rid of some components.  It's also possible to add a video camera but I didn't do this.
 
 ##Electrical
 This project is based on [shaunuk/picar] but replaces the servo board with a soft PWM driver on the PIs GPIO pins.  It's also possible to get rid of the battery power supply for the PI depending on your specific setup.
@@ -13,24 +13,24 @@ This project is based on [shaunuk/picar] but replaces the servo board with a sof
 https://www.youtube.com/watch?v=JSP6VKiU7F4
 
 ###Pi Power supply
-When it comes to powering the PI it is necessary to have a fairly stable 5V power supply otherwise it keeps resetting when you drive the motor.  For this example I had an old NiCad battery pack which dropped a lot of voltage when the car accelerated which caused the PI to keep resetting.  To get round that I've added an additional 7.2V AA battery pack and a 5V linear power supply to give a clean 5V supply to the PI independent of the motor demands.  If you have a new NiMH battery you may not need this and might get away with powering off the 5V offered by the ESC.  
+When it comes to powering the PI it is necessary to have a fairly stable 5V power supply otherwise the Pi keeps resetting when you drive the motor.  For this example I had an old NiCad battery pack which dropped a lot of voltage when the car accelerated which caused the PI to keep resetting.  To get round that I've added an additional 7.2V AA battery pack and a 5V linear power supply to give a clean 5V supply to the PI independent of the motor demands.  If you have a new NiMH battery you may not need this and might get away with powering off the 5V offered by the ESC.  
 
 To see if this is an option you'll need to use a multi-meter and check how much that 5V line drops when your RC car is accelerated; you might want to put some load on the wheels as well to further load the battery.  You'll also want to check the 5V is fairly stable and doesn't rise 5.5V at any point.  If you’re happy with your on-board 5V supply you can remove the linear regulator and additional battery pack; you then just move the 0V and 5V wired from where the regulator was to the corresponding pins on the ESC (middle pin that's unconnected on my schematic).  
 
-I bought an old RC of ebay and found the supplied NiCad dropped too much voltage when the car accelerated.  Buying a new battery allowed me to run the Pi direct from the ESC.
+I bought an old RC of ebay and found the supplied NiCad dropped too much voltage when the car accelerated. Note - After writing this I bought a new battery that allowed me to run the Pi direct from the ESC.
 
 
-  Type  |  Old NiCad  | New NiMh
+    |  Old NiCad  | New NiMh
   ------|-------------|------
   Min ESC V  | 3.4  |  5.1
   Max ESC V  | 5.5  |  5.5 
 
 
 
-There are a number of RC car electrical setups but my example uses a battery eliminator circuit (which I've not used because of the battery issue).  The electronics supply normally comes from the electronic speed controller (ESC) and powers the receiver and steeirng servo with 5V (note these devices are more tolerant of power supply dips than the Pi).  The receiver normally receives commands from the radio controller than sends them to the ESC (throttle) and steering servo (steering).  These commands fall within the 0-5V supplied by the ESC for example: 1V = steer fwds; 1.5 = steer right; 0.5 = steer left.  Looking at the data sheet for my ESC I it could supply up to 1A which would have been enough for my Pi and my Steering Servo if the voltage had have been stable enough.
+There are a number of RC car electrical setups but my example uses an ESC and receiver with battery eliminator circuit .  The ectronics supply normally comes from the electronic speed controller (ESC) and powers the receiver and steeirng servo with 5V (note these devices are more tolerant of power supply dips than the Pi).  The receiver normally receives commands from the radio controller than sends them to the ESC (throttle) and steering servo (steering).  These commands fall within the 0-5V supplied by the ESC for example: 1V = steer fwds; 1.5 = steer right; 0.5 = steer left.  Looking at the data sheet for my ESC I it could supply up to 1A which would have been enough for my Pi and my Steering Servo if the voltage had have been stable enough.
 
 ###Servo signal levels
-It is necessary first to measure what your servo command signal voltage levels are and check they fall within the 0-3.3V range available by the PI GPIO lines.  You can do this with a multi-meter connected to the receiver pins.  On my car speed and steering both use 3 pin headers which are wired:
+We'll be using PWM to control the servos which will be capable of driving 0-3.3V in 3.3mv steps; it is therefore necessary first to measure what your servo command signal voltage levels are and check they fall within this range.    You can do this with a multi-meter connected to the receiver pins.  On my car speed and steering both use 3 pin headers which are wired:
 <ul>
    <li>Gnd - Black</li>
    <li>Power - Red</li>
@@ -63,7 +63,7 @@ For my linear power supply I used an LM7805 circuit and put a heatsink on it to 
 
 I then attached a PP3 battery clip and 6xAA pack with a PP3 connector on it.
 Check if your battery and ESC are up to powering the car in order to avoid having to go down the extra battery route.  
-I've also used a 26w header socket to attach to the raspberry PI GPIO lines; I like this method as it means it's hard to mi-wire when re-connecting.
+I've also used a 26w header socket to attach to the raspberry PI GPIO lines; I like this method as it means it's hard to mi-wire when re-connecting plus you can quicly remove you Pi as required.
 
 You can see here how I've packaged everything up in the car.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0219.jpg)
@@ -95,6 +95,7 @@ Download a new version of node.js
 <li>[sudo wget http://nodejs.org/dist/v0.10.21/node-v0.10.21-linux-arm-pi.tar.gz]</li>
 <li>Then unzip it.</li>
 <li>[sudo tar -xvzf node-v0.10.21-linux-arm-pi.tar.gz]</li>
+<li>[sudo rm node-v0.10.21-linux-arm-pi.tar.gz]</li>
 <li>Create symbolic links to the node executables</li>
 <li>[sudo ln -s /home/pi/picar/node-v0.10.21-linux-arm-pi/bin/node /bin/node]</li>
 <li>Package manager</li>
@@ -105,7 +106,7 @@ Download a new version of node.js
 ###Download additional node packages
 Next we use the node package manager (npm) to install some packages that we are going to use in node to give us the functionality required to control our RC car.
 <ul>
-<li>[npm install socket.io node-static sleep optimist pi-blaster.js]</li>
+<li>[sudo npm install socket.io node-static sleep optimist pi-blaster.js]</li>
 </ul>
 
 ###Download PI Blaster soft PWM daemon
@@ -136,7 +137,7 @@ Wiring and signal directions.
 
 You should now be fairly confident about controlling the servos and powering your pi from the RC platform.  Just modify what's in 'pwm_test2' and keep running it till you are happy with how it all works.
 
-Enter your platform specific constants into the 'readme' file.
+Enter your platform specific constants into the 'readme' file; we'll use them later to do some scaling.
 
 ###Configure PI to use Smartphone WiFi
 We now need to set your Pi up to use your phone as wifi.
@@ -149,7 +150,7 @@ We now need to set your Pi up to use your phone as wifi.
 * You are now going to set your Pi IP address to static.
 * Enter [ifconfig] write down your IP address for wlan0.
 * Edit your network setup file [sudo nano /etc/network/interfaces] file and set to to the current wlan0 IP address and from dhcp to static using the 'interfaces' file in this project as an example.
-* Reboot the Pi and check all still works.
+* Reboot the Pi and check all still works; your IP address will differ.
 
 ###Setup your smartphone defaults
 With the Wifi Setup you can now test out the phone.
@@ -163,12 +164,12 @@ With the Wifi Setup you can now test out the phone.
 You may need to setup the scaling specific to your platform...
 * In socket.html comment out the min and max gamma if statements.
 * Also comment out the scaling M and C terms so the event.beta and event.gamma numbers are sent to the Pi.
-* Run up your app and make a note of the raw numbers in the specific orientation you want to use your phone in
+* Run up your app [node app.js] and make a note of the raw numbers in the specific orientation you want to use your phone in.
 * The nummbers are degrees; in my example I tilted +/- 30 degrees to steer and 0 was full fwds and 60 full reverse.
 * Put your numbers in the readme file
 * Using excel or a calculator work out the constants you need to use to convert your phone tilt values into the setPWM API demands required to control your car.
 * Uncomemnt out the min max demands if construct and enter your specific min max constants at the top.
-* Now edit app.js.  In the emergensy stop functio enter the values for steering and throttle that stop your Pi.
+* Now edit app.js.  In the emergensy stop function enter the values for steering and throttle that stop your Pi.
 
 Now run upp the app a few times and convince yourself it's all working.
  
@@ -182,7 +183,7 @@ We now need to configure the app to run as default when we power up the Pi.
 Reboot your Pi and check you can log onto the web page.  You should now be ready to race.
 
 #Issues
-PiBlaster can cause issues with the windows environment; mine kept crashing when I moved them when it was running.  If you stop running it the problem will go away.
+PiBlaster can cause issues with the Pi windows environment; mine kept crashing when I moved them when it was running.  If you stop running it the problem will go away.
 [sudo /etc/init.d/pi-blaster stop]
 
 For more command info see the 'readme' file.
