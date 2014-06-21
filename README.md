@@ -15,7 +15,17 @@ https://www.youtube.com/watch?v=JSP6VKiU7F4
 ###Pi Power supply
 When it comes to powering the PI it is necessary to have a fairly stable 5V power supply otherwise it keeps resetting when you drive the motor.  For this example I had an old NiCad battery pack which dropped a lot of voltage when the car accelerated which caused the PI to keep resetting.  To get round that I've added an additional 7.2V AA battery pack and a 5V linear power supply to give a clean 5V supply to the PI independent of the motor demands.  If you have a new NiMH battery you may not need this and might get away with powering off the 5V offered by the ESC.  
 
-To see if this is an option you'll need to use a multi-meter and check how much that 5V line drops when your RC car is accelerated; you might want to put some load on the wheels as well to further load the battery.  You'll also want to check the 5V is fairly stable and doesn't rise 5.5V at any point.  If you’re happy with your on-board 5V supply you can remove the linear regulator and additional battery pack; you then just move the 5V supply from where the regulator was to the 5V pin on the ESC (middle pin that's unconnected on my schematic).
+To see if this is an option you'll need to use a multi-meter and check how much that 5V line drops when your RC car is accelerated; you might want to put some load on the wheels as well to further load the battery.  You'll also want to check the 5V is fairly stable and doesn't rise 5.5V at any point.  If you’re happy with your on-board 5V supply you can remove the linear regulator and additional battery pack; you then just move the 5V supply from where the regulator was to the 5V pin on the ESC (middle pin that's unconnected on my schematic).  
+
+I bought an old RC of ebay and found the supplied NiCad dropped too much voltage when the car accelerated.  Buying a new battery allowed me to run the Pi from the ESC.
+
+
+Type  |  Old NiCad  | NiMh
+------|-------------|------
+Min ESC V  | 3.4  |  5.1
+Max ESC V  | 5.5  |  5.5 
+
+
 
 There are a number of RC car electrical setups but my example uses a battery eliminator circuit (which I've not used because of the battery issue).  The electronics supply normally comes from the electronic speed controller (ESC) and powers the receiver and steeirng servo with 5V (note these devices are more tolerant of power supply dips than the Pi).  The receiver normally receives commands from the radio controller than sends them to the ESC (throttle) and steering servo (steering).  These commands fall within the 0-5V supplied by the ESC for example: 1V = steer fwds; 1.5 = steer right; 0.5 = steer left.  Looking at the data sheet for my ESC I it could supply up to 1A which would have been enough for my Pi and my Steering Servo if the voltage had have been stable enough.
 
