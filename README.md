@@ -51,17 +51,17 @@ For my linear power supply I used an LM7805 circuit and put a heatsink on it to 
 
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/reg cct.PNG)
 
-I then attached a PP3 battery clip and 6xAA pack with a PP3 connector on it.  I've also used a 26w header socket to attach to the raspberry PI GPIO lines; I like this method as it means it's hard to mis-wire when re-connecting plus you can quicly remove you Pi as required.
+I then attached a PP3 battery clip and 6xAA pack with a PP3 connector on it.  I've also used a 26w header socket to attach to the raspberry PI GPIO lines; I like this method as it means it's hard to mis-wire when re-connecting plus you can quickly remove you Pi as required.
 
 You can see here how I've packaged everything up in the car.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0219.jpg)
-The Pi Is placed in a plastic bag for protection; it's worth putting peice of card underneath it to make sure the PCB doesn't poke through the plastic.
+The Pi Is placed in a plastic bag for protection; it's worth putting piece of card underneath it to make sure the PCB doesn't poke through the plastic.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0220.jpg)
 Here you can see the wiring harness I made up including the linear regulator PCB and GPIO and interface connectors.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0221.jpg)
 
 ##Software 
-The Pi uses node.js to run a web server; a wi-fi dongle on the PI uses your phone as a wireless hotspot to enable wifi communications.  Once you enter the web address of the PI a dialog box appears prompting you to begin racing; at that point you can control your car by tiliting oyur phone.  An emergency stop is built into the app so if it loses comms to your phone the vehicle stops accelerating and steers forwards.  The Pi-Blaster program allows pins 17 and 18 of the PI to act as PWM outputs and control steering and throttle.
+The Pi uses node.js to run a web server; a wi-fi dongle on the PI uses your phone as a wireless hotspot to enable wifi communications.  Once you enter the web address of the PI a dialog box appears prompting you to begin racing; at that point you can control your car by tiliting your phone.  An emergency stop is built into the app so if it loses comms to your phone the vehicle stops accelerating and steers forwards.  The Pi-Blaster program allows pins 17 and 18 of the PI to act as PWM outputs and control steering and throttle.
 
 The app runs on raspbian using a raspberry PI rev B although you could use the A model.  
 
@@ -98,7 +98,8 @@ Next we use the node package manager (npm) to install some packages that we are 
 </ul>
 
 ###Setup the pi to boot to command line
-You will want to not boot to the windows environment because the PWM library can interfere with it.  If you do need to use the desktop you can allways start it with the command [startx].
+You will want to not boot to the windows environment because the PWM library can interfere with it.  If you do need to use the desktop you can always start it with the command 
+* [startx].
 
 ###Download PI Blaster soft PWM daemon
 The Pi blaster node library also requires a daemon to be downloaded that runs in the background and runs the PWM.  Have a look at [https://github.com/sarfata/pi-blaster.js/] to get some more info about this package.
