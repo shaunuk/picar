@@ -112,14 +112,14 @@ Next we use the node package manager (npm) to install some packages that we are 
 ###Download PI Blaster soft PWM daemon
 The Pi blaster node library also requires a daemon to be downloaded that runs in the background and runs the PWM.  Have a look at [https://github.com/sarfata/pi-blaster.js/] to get some more info about this package.
 
-*[sudo git clone https://github.com/sarfata/pi-blaster]
-*[sudo apt-get install autoconf]
-*[cd pi-blaster]
-*[sudo autogen.sh]
-*[sudo ./configure]
-*[sudo make]
-*[sudo make install]
-*[cd ..]
+* [sudo git clone https://github.com/sarfata/pi-blaster]
+* [sudo apt-get install autoconf]
+* [cd pi-blaster]
+* [sudo ./autogen.sh]
+* [sudo ./configure]
+* [sudo make]
+* [sudo make install]
+* [cd ..]
 
 Note - you will want to be able to stop the daemon; see note at end.
 
