@@ -8,24 +8,14 @@ Use your raspberry pi to control a 1/10 scale RC car via a web page hosted wirel
 This is a fork of an existing github project that I've modified to make easier to install and to get rid of some components.  It's also possible to add a video camera but I didn't do this.
 
 ##Electrical
-This project is based on [shaunuk/picar] but replaces the servo board with a soft PWM driver on the PIs GPIO pins.  It's also possible to get rid of the battery power supply for the PI depending on your specific setup.
+This project is based on [shaunuk/picar] but replaces the servo board with a soft PWM driver on the PIs GPIO pins.  I tried a few methods to use the onboard 5V supply but found it was too unstable to power the pi due to the voltage transients caused by powering the motor.
+
+There's a video of the project here:
 
 https://www.youtube.com/watch?v=JSP6VKiU7F4
 
 ###Pi Power supply
-When it comes to powering the PI it is necessary to have a fairly stable 5V power supply otherwise the Pi keeps resetting when you drive the motor.  For this example I had an old NiCad battery pack which dropped a lot of voltage when the car accelerated which caused the PI to keep resetting.  To get round that I've added an additional 7.2V AA battery pack and a 5V linear power supply to give a clean 5V supply to the PI independent of the motor demands.  If you have a new NiMH battery you may not need this and might get away with powering off the 5V offered by the ESC.  
-
-To see if this is an option you'll need to use a multi-meter and check how much that 5V line drops when your RC car is accelerated; you might want to put some load on the wheels as well to further load the battery.  You'll also want to check the 5V is fairly stable and doesn't rise 5.5V at any point.  If you’re happy with your on-board 5V supply you can remove the linear regulator and additional battery pack; you then just move the 0V and 5V wired from where the regulator was to the corresponding pins on the ESC (middle pin that's unconnected on my schematic).  
-
-I bought an old RC of ebay and found the supplied NiCad dropped too much voltage when the car accelerated. Note - After writing this I bought a new battery that allowed me to run the Pi direct from the ESC.
-
-
-    |  Old NiCad  | New NiMh
-  ------|-------------|------
-  Min ESC V  | 3.4  |  5.1
-  Max ESC V  | 5.5  |  5.5 
-
-
+When it comes to powering the PI it is necessary to have a fairly stable 5V power supply otherwise the Pi keeps resetting when you drive the motor.  To get round that I've added an additional 7.2V AA battery pack and a 5V linear regulator to give a clean 5V supply to the PI independent of the motor demands. 
 
 There are a number of RC car electrical setups but my example uses an ESC and receiver with battery eliminator circuit .  The ectronics supply normally comes from the electronic speed controller (ESC) and powers the receiver and steeirng servo with 5V (note these devices are more tolerant of power supply dips than the Pi).  The receiver normally receives commands from the radio controller than sends them to the ESC (throttle) and steering servo (steering).  These commands fall within the 0-5V supplied by the ESC for example: 1V = steer fwds; 1.5 = steer right; 0.5 = steer left.  Looking at the data sheet for my ESC I it could supply up to 1A which would have been enough for my Pi and my Steering Servo if the voltage had have been stable enough.
 
@@ -61,9 +51,7 @@ For my linear power supply I used an LM7805 circuit and put a heatsink on it to 
 
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/reg cct.PNG)
 
-I then attached a PP3 battery clip and 6xAA pack with a PP3 connector on it.
-Check if your battery and ESC are up to powering the car in order to avoid having to go down the extra battery route.  
-I've also used a 26w header socket to attach to the raspberry PI GPIO lines; I like this method as it means it's hard to mi-wire when re-connecting plus you can quicly remove you Pi as required.
+I then attached a PP3 battery clip and 6xAA pack with a PP3 connector on it.  I've also used a 26w header socket to attach to the raspberry PI GPIO lines; I like this method as it means it's hard to mis-wire when re-connecting plus you can quicly remove you Pi as required.
 
 You can see here how I've packaged everything up in the car.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0219.jpg)
@@ -109,6 +97,9 @@ Next we use the node package manager (npm) to install some packages that we are 
 <li>[sudo npm install socket.io node-static sleep optimist pi-blaster.js]</li>
 </ul>
 
+###Setup the pi to boot to command line
+You will want to not boot to the windows environment because the PWM library can interfere with it.  If you do need to use the desktop you can allways start it with the command [startx].
+
 ###Download PI Blaster soft PWM daemon
 The Pi blaster node library also requires a daemon to be downloaded that runs in the background and runs the PWM.  Have a look at [https://github.com/sarfata/pi-blaster.js/] to get some more info about this package.
 
@@ -123,14 +114,13 @@ The Pi blaster node library also requires a daemon to be downloaded that runs in
 
 Note - you will want to be able to stop the daemon; see note at end.
 
-
 ###Setup your PWM defaults
 I've included a node script file called pwm_test2.  Tou run this you enter:
 <ul>
 <li>[node pwm_test2]</li>
 </ul>
 
-We are now going to integrate the pi int the RC car and check we can control the servos.  You can either connect your Pi to your TV and a keyboard or setup vpn to do this.  
+We are now going to integrate the pi int the RC car and check we can control the servos.  You can either connect your Pi to your TV and a keyboard or setup vpn or ssh to do this.  
 
 The pi-blaster node setPwm() API requires a pin and demand parameter.  For example setPwm(17,.5) would set ppin 17 to 50% PWM demand or 3.2/2 V.  First off make sure you are happy
 with how the API works and make sure you can set the output voltage on pins 17 and 18 using a meter.
@@ -150,7 +140,7 @@ We now need to set your Pi up to use your phone as wifi.
 
 * On your phone enable the wifi hotspot option.
 * On your Pi disable the existing WiFi option and connect to your phone.
-* You may need to enter a network key to do this.
+* You may need to enter a network key to do this; this will be in your phone somewhere.
 * Check it all works by accessing the internet from your Pi.
 * Reboot your Pi and check it still all works.
 * You are now going to set your Pi IP address to static.
@@ -191,5 +181,8 @@ Reboot your Pi and check you can log onto the web page.  You should now be ready
 #Issues
 PiBlaster can cause issues with the Pi windows environment; mine kept crashing when I moved them when it was running.  If you stop running it the problem will go away.
 [sudo /etc/init.d/pi-blaster stop]
+Once you're sick of this project you can uninstall it using:
+[cd ~/picar/pi-blaster]
+[sudo make uninstall]
 
 For more command info see the 'readme' file.
