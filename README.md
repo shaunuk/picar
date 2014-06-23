@@ -164,8 +164,8 @@ You may need to setup the scaling specific to your platform...
 * The nummbers are degrees; in my example I tilted +/- 30 degrees to steer and 0 was full fwds and 60 full reverse.
 * Put your numbers in the readme file
 * Using excel or a calculator work out the constants you need to use to convert your phone tilt values into the setPWM API demands required to control your car.
-* Uncomemnt out the min max demands if construct and enter your specific min max constants at the top.
-* Now edit app.js.  In the emergensy stop function enter the values for steering and throttle that stop your Pi.
+* Comemnt out the min max demands if construct and enter your specific min max constants at the top.
+* Now edit app.js.  In the emergency stop function enter the values for steering and throttle that stop your Pi.
 
 Now run upp the app a few times and convince yourself it's all working.
  
