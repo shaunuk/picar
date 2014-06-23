@@ -17,7 +17,7 @@ https://www.youtube.com/watch?v=JSP6VKiU7F4
 ###Pi Power supply
 When it comes to powering the PI it is necessary to have a fairly stable 5V power supply otherwise the Pi keeps resetting when you drive the motor.  To get round that I've added an additional 7.2V AA battery pack and a 5V linear regulator to give a clean 5V supply to the PI independent of the motor demands. 
 
-There are a number of RC car electrical setups but my example uses an ESC and receiver with battery eliminator circuit .  The ectronics supply normally comes from the electronic speed controller (ESC) and powers the receiver and steeirng servo with 5V (note these devices are more tolerant of power supply dips than the Pi).  The receiver normally receives commands from the radio controller than sends them to the ESC (throttle) and steering servo (steering).  These commands fall within the 0-5V supplied by the ESC for example: 1V = steer fwds; 1.5 = steer right; 0.5 = steer left.  Looking at the data sheet for my ESC I it could supply up to 1A which would have been enough for my Pi and my Steering Servo if the voltage had have been stable enough.
+There are a number of RC car electrical setups but my example uses an ESC and receiver with battery eliminator circuit .  The ectronics supply normally comes from the electronic speed controller (ESC) and powers the receiver and steeirng servo with 5V (note these devices are more tolerant of power supply dips than the Pi).  The receiver normally receives commands from the radio controller than sends them to the ESC (throttle) and steering servo (steering).  These commands fall within the 0-5V supplied by the ESC for example: 1V = steer fwds; 1.5 = steer right; 0.5 = steer left. 
 
 ###Servo signal levels
 We'll be using PWM to control the servos which will be capable of driving 0-3.3V in 3.3mv steps; it is therefore necessary first to measure what your servo command signal voltage levels are and check they fall within this range.    You can do this with a multi-meter connected to the receiver pins.  On my car speed and steering both use 3 pin headers which are wired:
@@ -180,9 +180,9 @@ Reboot your Pi and check you can log onto the web page.  You should now be ready
 
 #Issues
 PiBlaster can cause issues with the Pi windows environment; mine kept crashing when I moved them when it was running.  If you stop running it the problem will go away.
-[sudo /etc/init.d/pi-blaster stop]
-Once you're sick of this project you can uninstall it using:
-[cd ~/picar/pi-blaster]
-[sudo make uninstall]
 
-For more command info see the 'readme' file.
+* [sudo /etc/init.d/pi-blaster stop]
+* Once you're sick of this project you can uninstall it using:
+* [cd ~/picar/pi-blaster]
+* [sudo make uninstall]
+* For more command info see the 'readme' file.
