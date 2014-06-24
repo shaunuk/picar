@@ -53,13 +53,13 @@ For my linear power supply I used an LM7805 circuit and put a heatsink on it to 
 
 I then attached a PP3 battery clip and 6xAA pack with a PP3 connector on it.  I've also used a 26w header socket to attach to the raspberry PI GPIO lines; I like this method as it means it's hard to mis-wire when re-connecting plus you can quickly remove you Pi as required.
 
-Here you can see how I've wired up the Pi to my schematic; Ive covered my regulator circuit in heatshrink to keep it protected. 
-![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSCF1499.jpg)
+I've covered my regulator circuit in heatshrink to keep it protected. You can see I've also got some protection on my header pins in case a wire falls off.
+![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC1499.jpg)
 You can see here how I've packaged everything up in the car.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0219.jpg)
 The Pi Is placed in a plastic bag for protection; it's worth putting piece of card underneath it to make sure the PCB doesn't poke through the plastic.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0220.jpg)
-Here you can see the wiring harness I made up including the linear regulator PCB and GPIO and interface connectors.
+Here agin you can see the wiring harness I made up.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0221.jpg)
 
 ##Software 
