@@ -12,7 +12,7 @@ This project is based on [shaunuk/picar] but replaces the servo board with a sof
 
 There's a video of the project here:
 
-https://www.youtube.com/watch?v=JSP6VKiU7F4
+http://youtu.be/zxGGJxSDCvE
 
 ###Pi Power supply
 When it comes to powering the PI it is necessary to have a fairly stable 5V power supply otherwise the Pi keeps resetting when you drive the motor.  To get round that I've added an additional 7.2V AA battery pack and a 5V linear regulator to give a clean 5V supply to the PI independent of the motor demands. 
@@ -47,12 +47,14 @@ Once you are happy about how you are going to power your PI and that the GPIO ar
 
 For the 3 pin headers I used 2.54mm PCB header and soldered wired direct.  I then used superglue to stop the pins moving about.  You'll also need heat-shrink or equivalent to cover over the solder joints.
 To power the PI I chopped a micro USB cable and used the black and red wires from that as my 5V supply.
-For my linear power supply I used an LM7805 circuit and put a heatsink on it to keep it nice and cool:
+For my linear power supply I used an LM7805 circuit and put a heatsink on it to keep it nice and cool.  I'd recommend using a different LDO regulator if you have one though; this circuit will stop working at 7V; a LM2940CT will regulate down to 5.5V and would be a much better option.
 
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/reg cct.PNG)
 
 I then attached a PP3 battery clip and 6xAA pack with a PP3 connector on it.  I've also used a 26w header socket to attach to the raspberry PI GPIO lines; I like this method as it means it's hard to mis-wire when re-connecting plus you can quickly remove you Pi as required.
 
+Here you can see how I've wired up the Pi to my schematic; Ive covered my regulator circuit in heatshrink to keep it protected. 
+![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSCF1499.jpg)
 You can see here how I've packaged everything up in the car.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0219.jpg)
 The Pi Is placed in a plastic bag for protection; it's worth putting piece of card underneath it to make sure the PCB doesn't poke through the plastic.
