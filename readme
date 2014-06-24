@@ -111,3 +111,14 @@ to put int /etc/init.d/rc.local
  	'sudo /etc/init.d node-server.sh start'
 	in different dirs other than picar.
 
+17. change ownership of dirs sou you don't have to keep using sudo:
+    sudo chown -R pi media
+    sudo chown -R picar
+    ls -l picar 
+    ls -l media
+
+    etc...
+
+18. restart network...
+    sudo /etc/init.d/networking stop
+    sudo /etc/init.d/networking start
