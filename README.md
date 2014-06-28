@@ -3,12 +3,12 @@
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0216.jpg)
 
 ##Overview
-Use your raspberry pi to control a 1/10 scale RC car via a web page hosted wirelessly on your PI.  All you need to do is set up your PI to use your mobile as a hotspot then log onto the appropriate web page and tilt your phone to control your car like a Wii Remote.  I've used an old Tamiya hornet in this example; any car will do but if you are buying one try and get one with enough space under the bodyshell to fit all your electronics.
+Use your raspberry pi to control a 1/10 scale RC car via a web page hosted wirelessly on your PI.  All you need to do is set up your PI to use your mobile as a hotspot then log onto it's hosted web page and tilt your phone to control your car like a Wii Remote.  I've used an old Tamiya hornet in this example; any car will do but if you are buying one try and get one with enough space under the bodyshell to fit all your electronics.
 
 This is a fork of an existing github project that I've modified to make easier to install and to get rid of some components.  It's also possible to add a video camera but I didn't do this.
 
 ##Electrical
-This project is based on [shaunuk/picar] but replaces the servo board with a soft PWM driver on the PIs GPIO pins.  I tried a few methods to use the onboard 5V supply but found it was too unstable to power the pi due to the voltage transients caused by powering the motor.
+This project is based on [shaunuk/picar] but replaces the servo board with a soft PWM driver on the PIs GPIO pins.  I tried a few methods to use the 5V supply provided by the ESC to run the Pi but found it was too unstable due to the voltage transients caused by powering the motor.
 
 There's a video of the project here:
 
@@ -45,21 +45,21 @@ Once you are happy about how you are going to power your PI and that the GPIO ar
 
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/picar_scematic.PNG)
 
-For the 3 pin headers I used 2.54mm PCB header and soldered wired direct.  I then used superglue to stop the pins moving about.  You'll also need heat-shrink or equivalent to cover over the solder joints.
+For the 3 pin headers I used 2.54mm PCB header and soldered the wires direct.  I then used superglue to stop the pins moving about.  You'll also need heat-shrink or equivalent to cover over the solder joints.
 To power the PI I chopped a micro USB cable and used the black and red wires from that as my 5V supply.
 For my linear power supply I used an LM7805 circuit and put a heatsink on it to keep it nice and cool.  I'd recommend using a different LDO regulator if you have one though; this circuit will stop working at 7V; a LM2940CT will regulate down to 5.5V and would be a much better option.
 
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/reg cct.PNG)
 
-I then attached a PP3 battery clip and 6xAA pack with a PP3 connector on it.  I've also used a 26w header socket to attach to the raspberry PI GPIO lines; I like this method as it means it's hard to mis-wire when re-connecting plus you can quickly remove you Pi as required.
+I then attached a PP3 battery clip and 6xAA pack with a PP3 connector on it.  I've also used a 26w header socket to attach to the raspberry PI GPIO lines; I like this method as it means it's hard to mis-wire when re-connecting plus you can quickly remove your Pi as required.
 
-Here you can see how I've wired up the Pi to my schematic; Ive covered my regulator circuit in heatshrink to keep it protected. 
-![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSCF1499.jpg)
+I've covered my regulator circuit in heatshrink to keep it protected. You can see I've also got some protection on my header pins in case a wire falls off.
+![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC1499.jpg)
 You can see here how I've packaged everything up in the car.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0219.jpg)
 The Pi Is placed in a plastic bag for protection; it's worth putting piece of card underneath it to make sure the PCB doesn't poke through the plastic.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0220.jpg)
-Here you can see the wiring harness I made up including the linear regulator PCB and GPIO and interface connectors.
+Here agin you can see the wiring harness I made up.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0221.jpg)
 
 ##Software 
