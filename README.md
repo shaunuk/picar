@@ -5,19 +5,23 @@
 ##Overview
 Use your raspberry pi to control a 1/10 scale RC car via a web page hosted wirelessly on your PI.  All you need to do is set up your PI to use your mobile as a hotspot then log onto it's hosted web page and tilt your phone to control your car like a Wii Remote.  I've used an old Tamiya hornet in this example; any car will do but if you are buying one try and get one with enough space under the bodyshell to fit all your electronics.
 
-This is a fork of an existing github project that I've modified to make easier to install and to get rid of some components.  It's also possible to add a video camera but I didn't do this.
+This is a fork of an existing github project that I've modified to:
+
+* Improve documentation
+* Get rid of 2/3 of the components
+* Improve control sensitivity
 
 ##Electrical
-This project is based on [shaunuk/picar] but replaces the servo board with a soft PWM driver on the PIs GPIO pins.  I tried a few methods to use the 5V supply provided by the ESC to run the Pi but found it was too unstable due to the voltage transients caused by powering the motor.
+This project is based on [shaunuk/picar] but replaces the servo board with a soft PWM driver on the PIs GPIO pins.  I've provided the option to use either an isolated supply for the Pi or to use the supply off the ESC.  The latter is the most elegant solution but has issues with the motor pulling the battery voltage down and causing the Pi to reset.
 
 There's a video of the project here:
 
 http://youtu.be/zxGGJxSDCvE
 
 ###Pi Power supply
-When it comes to powering the PI it is necessary to have a fairly stable 5V power supply otherwise the Pi keeps resetting when you drive the motor.  To get round that I've added an additional 7.2V AA battery pack and a 5V linear regulator to give a clean 5V supply to the PI independent of the motor demands. 
+When it comes to powering the PI it is necessary to have a stable 5V power supply otherwise the Pi will reset.  I've provided 2 methods of powering the Pi; one using a 7.2V AA battery pack and a 5V linear regulator to give a clean 5V supply and one that uses the ESC power supply and uses a software algorithm to stop the motor accidentally reseting the Pi.
 
-There are a number of RC car electrical setups but my example uses an ESC and receiver with battery eliminator circuit .  The ectronics supply normally comes from the electronic speed controller (ESC) and powers the receiver and steeirng servo with 5V (note these devices are more tolerant of power supply dips than the Pi).  The receiver normally receives commands from the radio controller than sends them to the ESC (throttle) and steering servo (steering).  These commands fall within the 0-5V supplied by the ESC for example: 1V = steer fwds; 1.5 = steer right; 0.5 = steer left. 
+There are a number of RC car electrical setups but my example uses an ESC and receiver with battery eliminator circuit .  The electronics supply normally comes from the electronic speed controller (ESC) and powers the receiver and steeirng servo with 5V (note these devices are more tolerant of power supply dips than the Pi).  The receiver normally receives commands from the radio controller than sends them to the ESC (throttle) and steering servo (steering).  These commands fall within the 0-5V supplied by the ESC for example: 1V = steer fwds; 1.5 = steer right; 0.5 = steer left. 
 
 ###Servo signal levels
 We'll be using PWM to control the servos which will be capable of driving 0-3.3V in 3.3mv steps; it is therefore necessary first to measure what your servo command signal voltage levels are and check they fall within this range.    You can do this with a multi-meter connected to the receiver pins.  On my car speed and steering both use 3 pin headers which are wired:
@@ -41,6 +45,7 @@ The steering voltages were:
    <li>Full Right:   .355V</li>
 </ul>
 
+### Pi with Isolated supply 
 Once you are happy about how you are going to power your PI and that the GPIO are up to the job you can start thinking about wiring it up.
 
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/picar_scematic.PNG)
@@ -61,6 +66,24 @@ The Pi Is placed in a plastic bag for protection; it's worth putting piece of ca
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0220.jpg)
 Here agin you can see the wiring harness I made up.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0221.jpg)
+
+### Pi using ESC supply
+If you opt for this approach the wiring is much simpler; also there's a lot more room in the car.  The only issue is you may have to play around with the motor demand rate of change limitiing algorithm in app.js to get to a point where your Pi doesn't keep resetting because of voltage drop caused by the motor loading the battery.  You can control this quite effectively by controlling the rate of change that's allowed to be sent to the ESC from the PI - you'll find the amount of rate limiting you require will depend on:
+
+* Motor power (stock being best)
+* Battery technology i.e. NIMH being better than NICAD
+* Batter capacity and condition
+* Drive type 2WD being better than 4WD
+* Efficiency of ESC power supply circuitry
+* Running surface - grass being worst
+
+![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/picar_scematic_nobat.PNG)
+
+You can see here the wiring harness is much simpler.
+![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSCF1517.jpg)
+And there's a lot more room in the car.
+![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSCF1515.jpg)
+
 
 ##Software 
 The Pi uses node.js to run a web server; a wi-fi dongle on the PI uses your phone as a wireless hotspot to enable wifi communications.  Once you enter the web address of the PI a dialog box appears prompting you to begin racing; at that point you can control your car by tiliting your phone.  An emergency stop is built into the app so if it loses comms to your phone the vehicle stops accelerating and steers forwards.  The Pi-Blaster program allows pins 17 and 18 of the PI to act as PWM outputs and control steering and throttle.
