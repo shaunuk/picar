@@ -72,7 +72,7 @@ If you opt for this approach the wiring is much simpler; also there's a lot more
 
 * Motor power (stock being best)
 * Battery technology i.e. NIMH being better than NICAD
-* Batter capacity and condition
+* Battery capacity and condition
 * Drive type 2WD being better than 4WD
 * Efficiency of ESC power supply circuitry
 * Running surface - grass being worst
@@ -164,6 +164,7 @@ Enter your platform specific constants into the 'readme' file; we'll use them la
 ###Configure PI to use Smartphone WiFi
 We now need to set your Pi up to use your phone as wifi.
 
+* (Don't do this with the Pi RJ45 fitted)
 * On your phone enable the wifi hotspot option.
 * On your Pi disable the existing WiFi option and connect to your phone.
 * You may need to enter a network key to do this; this will be in your phone somewhere.
