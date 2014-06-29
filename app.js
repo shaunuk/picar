@@ -71,7 +71,7 @@ io.sockets.on('connection', function (socket)
 				smoothed_throttle = .14; 
 			}
 			// rate limit throttle to prevent power resets
-			smoothed_throttle -= .0005;   // reverse is non linear due to brakeing option so make it even slower
+			smoothed_throttle -= .0003;   // reverse is non linear due to brakeing option so make it even slower
 		}
 		else 
 			smoothed_throttle = data.gamma; //slow down normally
