@@ -29,7 +29,7 @@ NOTES
 
 spd			 R ---   M  ---  F
 PWM DEMAND              .105    .14     .175
-GAMMA RAW    		56               0
+GAMMA RAW    		-56               0
 
 Use excel to scale gamma->demand
 pwm = -.00125 gam + .175

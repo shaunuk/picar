@@ -21,8 +21,8 @@ function handler(request, response)
 
 var smoothed_throttle = .14;
 var logcount = 0;
-var old_gamma = 1.4;
-var old_beta = 1.4;
+var old_gamma = .14;
+var old_beta = .14;
 
 console.log('Pi Car we server listening on port 8080 visit http://ipaddress:8080/socket.html');
 
@@ -32,16 +32,16 @@ lastAction = "";
 //
 function emergencyStop()
 {
-  //enter 0 point here specific to your pwm control
-  piblaster.setPwm(17, .14); //thr
-  piblaster.setPwm(18, .14); //spd
-  console.log('###EMERGENCY STOP - signal lost or shutting down');
-}
+	//enter 0 point here specific to your pwm control
+  	piblaster.setPwm(17, .14); //thr
+ 	piblaster.setPwm(18, .14); //spd
+  	console.log('###EMERGENCY STOP - signal lost or shutting down');
+}//END emergencyStop
 
 
 // fire up a web socket server isten to cmds from the phone and set pwm
 // accordingly, if using a separate battery pack then disable the 
-// motor acceleration rate limiting algorithm as this is ther when the
+// motor acceleration rate limiting algorithm as this is required when the
 // Pi and motors share the same battery.
 //
 io.sockets.on('connection', function (socket) 
@@ -53,11 +53,25 @@ io.sockets.on('connection', function (socket)
 
 		// rate limit accelration only
 		// we want normal de-cceleration as this doesn't drain the battery
-		if(((data.gamma > .14) && (data.gamma > smoothed_throttle)) ||//fwd accel
-		((data.gamma < 14) && (data.gamma < smoothed_throttle)) )//rev accel
+		if((data.gamma > .14) && (data.gamma > smoothed_throttle)) //fwd accel
+		{
+			//if we went full back to full fwd... skip some rate limiting
+			if(smoothed_throttle < .14)
+			{
+				smoothed_throttle = .14;
+			}
+			// .035 = fwd range; .0035 = .5s .: .01 is roughy 1.5s to full accel @ 20Hz
+			smoothed_throttle += .001;
+		}
+		else if ((data.gamma < .14) && (data.gamma < smoothed_throttle)) //rev accel
 		{ 
-			// exponential filter throttle to prevent power resets
-			smoothed_throttle = .9 * smoothed_throttle + .1 * data.gamma;
+			// if we go full fwd to full back... 
+			if(smoothed_throttle > .14)
+			{
+				smoothed_throttle = .14; 
+			}
+			// rate limit throttle to prevent power resets
+			smoothed_throttle -= .0005;   // reverse is non linear due to brakeing option so make it even slower
 		}
 		else 
 			smoothed_throttle = data.gamma; //slow down normally
@@ -70,7 +84,7 @@ io.sockets.on('connection', function (socket)
 		{
 			//@ 2 Hz
 			logcount = 0;
-			console.log("Beta: "+data.beta+" Gamma: "+smoothed_throttle);				
+			console.log("Beta: "+data.beta+" Gamma: "+data.gamma+" smoothed: "+smoothed_throttle);				
 		}
 		
 		//control car using clever pwm gpio library
