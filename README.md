@@ -68,14 +68,17 @@ Here agin you can see the wiring harness I made up.
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/DSC_0221.jpg)
 
 ### Pi using ESC supply
-If you opt for this approach the wiring is much simpler; also there's a lot more room in the car.  The only issue is you may have to play around with the motor demand rate of change limitiing algorithm in app.js to get to a point where your Pi doesn't keep resetting because of voltage drop caused by the motor loading the battery.  You can control this quite effectively by controlling the rate of change that's allowed to be sent to the ESC from the PI - you'll find the amount of rate limiting you require will depend on:
+If you opt for this approach the wiring is much simpler; also there's a lot more room in the car.  The only issue is you may have to play around with the motor demand rate of change limitiing algorithm in app.js to get to a point where your Pi doesn't keep resetting because of voltage drop caused by the motor loading the battery.  You can control this problem quite effectively by controlling the rate of change of the speed demand that's allowed to be sent to the ESC from the PI - you'll find the amount of rate limiting you require to keep Pi happly will depend on:
 
 * Motor power (stock being best)
 * Battery technology i.e. NIMH being better than NICAD
 * Battery capacity and condition
 * Drive type 2WD being better than 4WD
 * Efficiency of ESC power supply circuitry
+* How the ESC reverse works the break->reverse can cause a big demand change 
 * Running surface - grass being worst
+
+With my setup I really didn't notice much of an issue in using this algorithm in terms of how the car hamdled.
 
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/picar_scematic_nobat.PNG)
 
