@@ -78,7 +78,7 @@ If you opt for this approach the wiring is much simpler; also there's a lot more
 * How the ESC reverse works the break->reverse can cause a big demand change 
 * Running surface - grass being worst
 
-With my setup I really didn't notice much of an issue in using this algorithm in terms of how the car hamdled.
+With my setup I really didn't notice much of an issue in using this algorithm in terms of how the car handled.
 
 ![](https://github.com/lawsonkeith/Pi-Rc-Car/raw/master/media/picar_scematic_nobat.PNG)
 
