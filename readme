@@ -1,0 +1,124 @@
+
+NOTES
+-----
+
+1. use piblaster to do the soft pwm.  
+	pcb pin 12 throttle 17
+	pcb pin 13 steer 18
+	pcb pin 2 powers steering servo
+	pis powered via usb cable powered by the esc black and red are 0v & 5v
+
+2. download the piblaster daemon and js lib
+
+	mkdir ~/picar
+	cd ~/picar
+
+	git clone https://github.com/sarfata/pi-blaster.js
+	npm install pi-blaster.js
+
+	git clone https://github.com/sarfata/pi-blaster
+	make
+	sudo make install
+	(now runs automatically)
+ 
+	sudo make uninstall
+	(to uninstall)
+
+	
+3. iphone 5 servo throttle:
+
+spd			 R ---   M  ---  F
+PWM DEMAND              .105    .14     .175
+GAMMA RAW    		-56               0
+
+Use excel to scale gamma->demand
+pwm = -.00125 gam + .175
+
+. servo steer
+steer		        L ---        --- R
+PWM DEMAND   	      .105	       .175
+BETA RAW   	       -30              30
+pwm = .001167 x gam + .14
+
+
+4. sony xperia settings
+
+gamma:
+	fwd		back
+ph	7		-60
+pwm	.175		.105
+=.001044 ph + .168 
+
+bets:
+	left		r
+	-30		30
+	.105		.175
+=.001167 ph + .14
+
+
+
+use excel to scale beta->demand
+
+6. Voltage range .17
+7. pi current .46 A with a wifi fitted
+8. BEC Max I 1A
+9. Scaling the pwm and servos	
+	a. use meter to get voltages from servos using rc controller
+    	b. use pwm_test2 to get corresponding pwm demands for api
+    	c. get raw gamma and beta vals from phone
+    	d. scale in excel the gamma to pwm api levels
+    	e gamma is throttle beta is steer
+
+11. auto run node.js application on boot instructions
+	a. create node-server.sh in /etc/init.d
+	b. sudo chmod 755 ./node-server.sh
+	c. sudo update-rc.d node-server.sh defaults
+	d. "sudo update-rc.d node-server.sh remove" to remove auto start
+	e. "sudo /etc/init.d/node-server.sh start" to quick test or "stop"
+	f. sudo chmod +x ./node-server.sh
+12. alias cmds
+to put int /etc/init.d/rc.local
+
+	alias nodestart='sudo /etc/init.d/node-server.sh start'
+	alias nodestop='sudo /etc/init.d/node-server.sh stop'
+	alias nodetail='tail -n100 /var/log/node-server.log'
+
+13. To check services 
+	service --status--all
+
+14. note pwm driver causes instability in the windowing environment
+    enter the following cmd if you aren't using the pwm daemon but 
+    dont want the gui to hang
+    
+    sudo /etc/init.d/pi-blaster stop
+
+15. enter the following to set static ip
+    nano /etc/network/interfaces
+
+	auto lo
+
+	iface lo inet loopback
+	iface eth0 inet static
+	address 192.168.43.251
+	netmask 255.255.255.0
+	gateway 192.168.1.254`	
+	allow-hotplug wlan0
+	iface wlan0 inet manual
+	wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
+	iface default inet dhcp
+
+16. Check the node service can run from anywhere using 
+ 	'sudo /etc/init.d node-server.sh start'
+	in different dirs other than picar.
+
+17. change ownership of dirs sou you don't have to keep using sudo:
+    sudo chown -R pi media
+    sudo chown -R picar
+    ls -l picar 
+    ls -l media
+
+    etc...
+
+18. restart network...
+    sudo /etc/init.d/networking stop
+    sudo /etc/init.d/networking start

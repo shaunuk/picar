@@ -1,0 +1,25 @@
+// K Lawson 2014
+//
+// use correct node lib!!
+// 
+var piblaster = require("pi-blaster.js");
+
+// setPWM   (  Pi Pin  ,  Demand)
+// 17 = throttle
+// 18 = steer
+// demand = 0-1
+// where 1=3.3v and 0=0v
+
+//enter your own constants here
+
+//piblaster.setPwm(17,0.105); //throttle rev
+//piblaster.setPwm(17,0.14); //throttle n
+//piblaster.setPwm(17,0.175); //throttle fwds
+
+
+piblaster.setPwm(18,.105); // steer l
+//piblaster.setPwm(18,.14); // steer mid
+//piblaster.setPwm(18,.175); // steer r
+
+
+

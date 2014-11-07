@@ -7,77 +7,108 @@
 
 //------ Define your variables here
 var socket = io.connect(window.location.hostname+':8080');
+var nIntervId;
+ 
+//steering min and max pwm cmds
+var maxbeta = .175; //r limit
+var minbeta = .105; //l limit
 
-var centerbeta = 400; //where is the middle
-var minbeta = '340'; //right limit
-var maxbeta = '470'; //left limit
-var multbeta = 3; //factor to multiply the raw gyro figure by to get the desired rande of steering
+//throttle min and max pwm cmds
+var mingamma = .105; //backwards limit
+var maxgamma = .175; //forward limit
 
-
-var centergamma = 330;
-var ajustmentgamma = 70; //what do we do to the angle to get to 0 an rest
-var mingamma = 250; //backwards limit
-var maxgamma = 400; //forward limit
-var multgamma = 1; //factor to multiply the raw gyro figure by to get the desired rante os accalaration
-
-window.lastbeta='0';
-window.lastgamma='0';
-
-$(function(){
-  window.gyro = 'ready';
-  alert('Ready -- Lets race !');
+// This function is called when the page 1st loads on your phone
+//
+$(function()
+{
+    //send data to the pi at 20Hz
+    nIntervId = setInterval(SendToPi ,50);
+ 
+    window.gyro = 'ready';
+    alert('Ready -- Lets race !');
+  
 });
 
-window.ondeviceorientation = function(event) {
 
-  beta = centerbeta+(Math.round(event.beta*-1)*multbeta);
-  if (beta >= maxbeta) {
-    beta=maxbeta;
-  }
-  if (beta <= minbeta) {
-    beta=minbeta;
-  }
-gamma = event.gamma;
-  gamma = ((Math.round(event.gamma)+ajustmentgamma)*multgamma)+centergamma;
-/*
-  if (gamma >= maxgamma) {
-    gamma=maxgamma;
-  }
-  if (gamma <= gamma) {
-    gamma=mingamma;
-  }*/
+// This fuction is called @ 20Hz
+//
+function SendToPi()
+{
+    	if (window.gyro == 'ready')  
+   	{ 
+		//dont send another command until last one doone... its only a little pi
+		window.gyro = 'notready';
+		socket.emit('fromclient', { beta: beta, gamma: gamma } );
+		window.gyro = 'ready';
+    	}//END if
+
+}//End SendToPI
 
 
 
-//stop sending the same command more than once
-send = 'N';
-if (window.lastbeta != beta) { send = 'Y' }
-if (window.lastgamma != gamma) { send = 'Y' }
+// This fuction is called when the phone orientation changes
+//
+window.ondeviceorientation = function(event) 
+{
+    	var tmp_beta, tmp_gamma;
+    
+    	//steer
+    	tmp_beta = .001167 * event.beta + .14;
+    	//iphone beta =  .001167 * event.beta * -1) + .14;
+    	if (tmp_beta >= maxbeta) 
+    	{
+		tmp_beta=maxbeta;
+    	}
+    	if (tmp_beta <= minbeta) 
+    	{
+		tmp_beta=minbeta;
+    	}
+    
+    	beta = tmp_beta; //update global
 
-window.lastbeta=beta;
-window.lastgamma=gamma;
+    	// throttle...
+	// rather than going 0-360 gamma counts in + or - 90 degree quadrants.
+	// this can be a pain as if you go past 90 degrees it can start
+	// going the full opposite dir!
+    	// past -90 (full reverse) it count down from + 90 (which would cause car to go full fwds)
+    	// below 0 (full fwds) it counts up (which would get ignored)
+	// this will just confuse the operator so we'll mask i out so it stays in the 0- (-90) range
+    	tmp_gamma = event.gamma;
+    	if(tmp_gamma > 45)
+	{
+		tmp_gamma = -90; // gone past full reverse
+	}
+	else if (tmp_gamma > 0)	
+	{
+		tmp_gamma = 0;	//gone past full fwds
+	}
+	
+    	tmp_gamma = .00125 * tmp_gamma + .175;
+    	//iphone gamma = -0.00125 * Math.round(event.gamma) + .175;
 
-if (window.gyro == 'ready' && send=='Y')  { //dont send another command until last one doone... its only a little pi
-  window.gyro = 'notready';
-//  $.post("gyro.cgi", { beta: beta, gamma: gamma }, function(data) {
-    socket.emit('fromclient', { beta: beta, gamma: gamma } );
-    window.gyro = 'ready';
-//    $('#info').text('Raw Beta: '+event.beta+' Send:'+beta);
-//    $('#info2').text('Raw Gamma: '+event.gamma+' Send:'+gamma + (Math.round(event.gamma)*multgamma));
-//  });
-}
-}
+    	if (tmp_gamma >= maxgamma) 
+    	{
+		tmp_gamma=maxgamma;
+    	}
+    	if (tmp_gamma <= mingamma) 
+    	{
+		tmp_gamma=mingamma;
+    	}
+
+    	gamma = tmp_gamma; //update global
+  
+    
+}//END ondviceorientation
 
 
 
 </script>
+<body bgcolor="teal"> 
 </head><body>
 
-<!--<img src="http://172.20.10.4:8091/?action=stream">-->
-<input type=button name=button id=button value=go>
-<div id=info>waiting</div>
-<div id=info2>waiting</div>
-<input type=button value='snap' id=cam>
-</body>
-</head>
+ <div id=info><font size=7><pre></pre>picar</pre></font></div>
+ <div id=info><font size=3><pre></pre>https://github.com/lawsonkeith/picar</pre></font></div>
+ 
+ </body>
+ </head>
 </html>
